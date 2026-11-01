@@ -1,0 +1,5 @@
+MakeHuman core assets — CC0 1.0.
+Source: https://github.com/makehumancommunity/mpfb2
+System assets: https://static.makehumancommunity.org/assets/assetpacks/makehuman_system_assets.html
+License: https://creativecommons.org/publicdomain/zero/1.0/
+Source mesh and fitting files retain their original copyright and CC0 release notices.

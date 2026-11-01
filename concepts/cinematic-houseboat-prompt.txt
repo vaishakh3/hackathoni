@@ -1,0 +1,29 @@
+Use case: ui-mockup.
+Create ONE exceptional, high-fidelity desktop website opening-screen concept for Hackathoni, a real overnight hackathon aboard traditional Kerala houseboats. This is a much improved art direction for the existing site. Output a flat, full-bleed website viewport, landscape 16:10, at high resolution, no device frame, no browser chrome, no presentation board.
+
+Input images:
+Image 1 is a reference for the existing website's brand, content and centered boat composition, NOT a quality target. Reimagine its amateur CGI environment into a much more sophisticated, cinematic, photorealistic scene.
+Image 2 is the architectural and material reference: authentic Kerala kettuvallam, deep dark timber hull, elegantly lifted bow, sculptural woven palm canopy, coir lashings, arched openings, carved teak and bamboo. Respect this local identity.
+Image 3 is a reference for photographic water, subtle atmospheric depth, natural tropical vegetation and warm interior lighting, NOT a reference for the modern white yacht architecture.
+
+Scene and realism:
+Blue hour just after a warm sunset on the Alappuzha backwaters. The image should feel like a beautifully photographed real place. Muted deep indigo and jade water, a very restrained peach horizon, a layered coconut grove with varied trees and atmospheric haze, soft cloud detail. Foreground water has fine irregular capillary ripples, authentic Fresnel reflections, long broken amber lantern reflections and darker contact around the hull. No flat procedural palm silhouettes. No uniformly gray haze.
+An exquisite full-size traditional wooden houseboat dominates the center, spanning about 78% of the viewport width. Three-quarter broadside view, the gently raised bow on the right, camera just above deck height, little perspective distortion. Keep the entire hull visible. Give the houseboat the weight and proportions of a real habitable vessel rather than a toy. Its woven barrel roof has a beautifully curved silhouette, a few modest ventilator dormers, layered eaves, detailed bindings and natural material variation. Dark polished timber with worn edges, fine railings, ropes, realistic rubber fenders. Restrained warm lamps inside, a few subtle festoon bulbs, not fairy-light overload.
+Through the generous open arches, show six young adult Indian participants naturally working or quietly talking around real laptops, with normal human proportions, believable faces, cotton clothing, cups and notebooks. People are small and incidental at this scale, not posed toward the viewer. Interior shadows, pools of amber practical light and small screen glow. No doll-like round joints, plastic faces or glowing white eyes. A second houseboat is a tiny silhouette far away near the shore, visually subordinate.
+
+Website composition:
+Make it feel like entering a place, not reading an event template. The boat is the focal point, with breathing room around its silhouette. Quiet editorial UI, exceptionally refined typography and generous spacing; tasteful warm ivory on the darker image. Thin hairline rules, small navigational details. No cards, bento grids, badges, neon, gradients-as-graphics or huge blocks of text.
+Top left: a small graceful boat-line mark and wordmark 'hackathoni.' Preserve the spelling exactly: H A C K A T H O N I.
+Top center, small spaced lettering on two lines: '21—22 NOV 2026' and 'ALAPPUZHA, KERALA'.
+Top right: 'Field guide' and a discreet outlined link 'Your place aboard ↗'.
+Above the boat in the upper middle, in clear negative sky space, one elegantly typeset moderately sized headline: 'A night worth making.' Use a refined editorial serif with italic emphasis on 'worth making.' The headline is smaller and quieter than the boat, impeccably readable, no overlap with its roof.
+A short small caption below: 'Two houseboats. Seventeen hours. An idea that won’t let you sleep.'
+Below the boat above the footer, a minimal text action 'Step aboard' with a slim circular arrow.
+At the very bottom, a fine voyage line with five tiny stops labeled 'The jetty', 'Aboard', 'Midnight', 'First light', 'Your place'. The first stop is active in muted warm gold. Bottom left small text 'DEVIN × TINKERHUB · SOLO · FREE ENTRY'. A discreet 'Sound off' control at lower right.
+No extra copy, invented sponsor names, registration claims or watermarks.
+Final quality: sophisticated art direction, tactile handcrafted architecture, believable natural light and water, impeccably balanced minimal website UI. Dramatic improvement over the source screenshot, but restrained, intimate and grounded in Kerala rather than fantasy.
+
+Final correction pass:
+Change only the small bottom-right label under YOUR PLACE from 08:00 / ASHORE to 09:00 / ASHORE; preserve the composition, typography, boat, people, lighting and environment.
+
+Generated using the built-in image_gen tool.

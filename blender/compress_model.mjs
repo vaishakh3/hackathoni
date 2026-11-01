@@ -1,0 +1,14 @@
+import {NodeIO} from '@gltf-transform/core';
+import {ALL_EXTENSIONS} from '@gltf-transform/extensions';
+import {dedup,weld,prune,meshopt,textureCompress} from '@gltf-transform/functions';
+import {MeshoptEncoder,MeshoptDecoder} from 'meshoptimizer';
+import sharp from 'sharp';
+import {stat} from 'node:fs/promises';
+const path=new URL('../public/assets/houseboat.glb',import.meta.url).pathname;
+await MeshoptEncoder.ready;await MeshoptDecoder.ready;
+const io=new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'meshopt.encoder':MeshoptEncoder,'meshopt.decoder':MeshoptDecoder});
+const before=(await stat(path)).size;const doc=await io.read(path);
+if(!doc.getRoot().listNodes().some(n=>n.getName()==='roof'))throw new Error('Liftable roof is missing');
+await doc.transform(dedup(),weld(),prune({keepLeaves:true}),textureCompress({encoder:sharp,targetFormat:'webp',quality:89,resize:[1536,1536]}),meshopt({encoder:MeshoptEncoder,level:'medium'}));
+await io.write(path,doc);
+console.log(JSON.stringify({before,after:(await stat(path)).size,meshes:doc.getRoot().listMeshes().length,materials:doc.getRoot().listMaterials().length,roof:true}));

@@ -1,0 +1,19 @@
+# Dependencies and generated builds
+node_modules/
+dist/
+.astro/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+.openai/
+.vercel/
+
+# Working files and backups
+work/
+*.blend[0-9]
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store

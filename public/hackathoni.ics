@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hackathoni//Night Shift Preview//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:hackathoni-20261121-alappuzha
+DTSTAMP:20261101T000000Z
+DTSTART:20261121T103000Z
+DTEND:20261122T033000Z
+SUMMARY:Hackathoni — overnight houseboat hackathon
+LOCATION:Alappuzha\, Kerala — boarding point to be announced
+DESCRIPTION:Solo overnight hackathon on two houseboats. Event details from the supplied brief. Registration and exact boarding point to be announced. This calendar event does not confirm admission.
+STATUS:TENTATIVE
+END:VEVENT
+END:VCALENDAR

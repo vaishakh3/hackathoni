@@ -1,0 +1,69 @@
+---
+import '../styles/voyage.css';
+import '../styles/focus.css';
+const faqs = [
+ ['Is this a team hackathon?', 'Hackathoni is a solo hackathon. You build your own project while sharing the experience with other builders.'],
+ ['When and where?', 'Alappuzha, Kerala. Boarding: Saturday, 21 November 2026 at 16:00. Docking: Sunday, 22 November at 09:00. The exact boarding point will be announced.'],
+ ['Is entry free?', 'Entry is free. Application and selection details will be published when registration opens.'],
+ ['What can I build?', 'Challenge briefs, permitted tools, submission requirements, and judging criteria will be announced. Bring your curiosity; the website’s miniature workshop is an artist’s concept.'],
+ ['What about Wi-Fi, power, meals, and rest?', 'Connectivity, charging, meals, rest arrangements, accessibility, and onboard facilities are being finalized. Practical details will be published before participants need to commit.'],
+ ['What are the prizes?', 'Devin Max plans for winners, with more prizes to be announced. Award categories and terms are still to come.'],
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#102b35"/>
+<meta name="description" content="A night worth making. Hackathoni is a solo overnight hackathon on two houseboats in Alappuzha. Take the voyage."/>
+<meta property="og:title" content="Hackathoni — Leave the ordinary ashore."/><meta property="og:description" content="Two houseboats. One night. A different current. 21–22 November 2026, Alappuzha."/>
+<title>Hackathoni — Leave the ordinary ashore.</title>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@500;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+</head>
+<body data-stop="0">
+<a href="#voyage" class="skip">Skip to the voyage</a>
+<div class="world" id="world" aria-hidden="true"><div class="world-fallback"></div><canvas id="lake"></canvas></div>
+<div class="film-grain" aria-hidden="true"></div><div class="reading-shade" aria-hidden="true"></div>
+<header class="masthead">
+ <a class="wordmark" href="#jetty" data-go="0" aria-label="Hackathoni, return to the jetty"><svg viewBox="0 0 46 36" aria-hidden="true"><path d="M3 24h40l-7 9H11Z" fill="currentColor"/><path d="M9 21C10 4 36 4 37 21M14 21C15 10 31 10 32 21" fill="none" stroke="currentColor" stroke-width="2.5"/></svg><span>hacka<em>thoni.</em><small lang="ml">ഹാക്കത്തോണി</small></span></a>
+ <div class="edition"><span>21—22 NOV 2026</span><span>ALAPPUZHA, KERALA</span></div>
+ <div class="mast-actions"><button class="guide-open">Field guide <span>≡</span></button><button data-go="4" class="boarding-link">Your place aboard <span>↗</span></button></div>
+</header>
+<div class="coordinates"><i></i><span>9.50° N &nbsp; 76.34° E</span><span class="coordinates-line"></span><span id="scene-label">THE JETTY / LATE AFTERNOON</span></div>
+<main class="voyage" id="voyage" aria-label="An interactive voyage through five chapters. Swipe horizontally, use the chapter buttons, or use the left and right arrow keys.">
+ <section class="stop jetty" id="jetty" aria-labelledby="jetty-title">
+  <div class="chapter-copy"><p class="overline">21—22 NOVEMBER 2026 · ALAPPUZHA</p><h1 id="jetty-title">A night <em>worth making.</em></h1><p class="chapter-description">Two houseboats. Seventeen hours. An idea that won’t let you sleep.</p></div>
+  <button class="voyage-cta stage-cta" data-go="1"><span>Step aboard</span><span class="arrow-circle">→</span></button>
+  <div class="jetty-facts"><span>DEVIN × TINKERHUB</span><i></i><span>SOLO · FREE ENTRY</span></div>
+ </section>
+ <section class="stop aboard" id="aboard" aria-labelledby="aboard-title">
+  <div class="chapter-copy"><p class="overline">01 / THE FLOATING WORKSHOP</p><h2 id="aboard-title">Room for <em>your next idea.</em></h2><p class="chapter-description">Your own project. Good company. A night on the water.</p></div>
+  <button class="voyage-cta roof-control" id="roof-button" aria-pressed="true"><span>Lower the roof</span><span class="arrow-circle">↙</span></button>
+  <p class="tiny-note">AN ARTIST’S IMPRESSION OF THE NIGHT.<br/>ACTUAL BOAT LAYOUT MAY DIFFER.</p>
+  <div class="inspection-caption" aria-live="polite"><p class="overline">A CLOSER LOOK</p><h3 id="inspection-title">Good company.</h3><p id="inspection-description">Different ideas. A shared night.</p></div>
+  <div class="workshop-views" role="group" aria-label="Explore the workshop views" hidden><span>LOOK A LITTLE CLOSER</span><div><button data-inspect="0" aria-pressed="true">Whole boat</button><button data-inspect="1" aria-pressed="false">The makers</button><button data-inspect="2" aria-pressed="false">The desks <span>↗</span></button></div></div>
+  <div class="boat-hotspots" id="boat-hotspots"><button class="hotspot" data-hotspot="table" aria-label="Explore the build table" aria-expanded="false"><span>+</span><b>THE BUILD TABLE</b></button><button class="hotspot" data-hotspot="boat" aria-label="Learn about the thoni" aria-expanded="false"><span>+</span><b>THE THONI</b></button></div>
+  <aside class="hotspot-note" id="hotspot-note" role="region" aria-labelledby="hotspot-title" tabindex="-1" hidden><button id="hotspot-close" aria-label="Close boat detail">×</button><p class="overline" id="hotspot-label"></p><h3 id="hotspot-title"></h3><p id="hotspot-description"></p></aside>
+ </section>
+ <section class="stop midnight" id="midnight" aria-labelledby="midnight-title">
+  <div class="midnight-clock" aria-hidden="true">00:00<span>ON THE BACKWATERS</span></div>
+  <div class="chapter-copy"><h2 id="midnight-title">Keep a little <em>light on.</em></h2><p class="chapter-description">For the idea that’s almost there.</p></div>
+  <div class="water-invitation"><p>TOUCH THE WATER. STAY A WHILE.</p></div>
+ </section>
+ <section class="stop morning" id="morning" aria-labelledby="morning-title">
+  <div class="chapter-copy"><p class="overline">03 / FIRST LIGHT</p><h2 id="morning-title">Take something <em>new ashore.</em></h2><p class="chapter-description">By morning, the idea is yours to show.</p></div>
+  <button class="voyage-cta stage-cta" data-go="4"><span>Find your place aboard</span><span class="arrow-circle">→</span></button>
+  <div class="morning-note"><span lang="ml">പുലരി</span><p>PULARI / FIRST LIGHT</p></div>
+ </section>
+ <section class="stop boarding" id="boarding" aria-labelledby="boarding-title">
+  <div class="boarding-heading"><p class="overline">04 / THE NEXT MOVE IS YOURS</p><h2 id="boarding-title">Take a <br/><em>different current.</em></h2></div>
+  <article class="ticket"><div class="ticket-top"><span>HACKATHONI / 2026</span><span>ഹാക്കത്തോണി</span></div><p class="ticket-eyebrow">ONE NIGHT. A WORLD OF POSSIBILITY.</p><h3>Your next stop:<br/><em>somewhere unexpected.</em></h3><div class="ticket-grid"><div><span>BOARD</span><b>21 NOV · 16:00</b></div><div><span>DOCK</span><b>22 NOV · 09:00</b></div><div><span>WHERE</span><b>Alappuzha, Kerala</b></div><div><span>FORMAT</span><b>Solo · Free entry</b></div></div><div class="perforation" aria-hidden="true"></div><div class="ticket-status"><i></i> REGISTRATION OPENING SOON</div><p class="ticket-note">Applications aren’t live just yet.<br/>Until then, keep this night free.</p><a class="calendar-cta" href="/hackathoni.ics" download>Save the date <span>↗</span></a><button class="ticket-contact guide-open">Questions? Meet your organiser <span>↗</span></button><small>Event preview · this ticket does not confirm admission.</small></article>
+ </section>
+</main>
+<div class="voyage-tools"><button id="sound-toggle" aria-pressed="false" aria-label="Enable water ambience"><svg viewBox="0 0 20 16" aria-hidden="true"><path d="M2 5h4l5-4v14l-5-4H2Z" fill="none" stroke="currentColor"/><path d="M14 4q6 4 0 8" fill="none" stroke="currentColor"/></svg><span id="sound-text">SOUND OFF</span></button><button id="motion-toggle" aria-pressed="false"><span class="motion-icon">≈</span><span id="motion-text">STILL WATER</span></button><span id="loading-note" aria-live="polite">LOADING THE BOAT…</span></div>
+<footer class="voyage-footer"><div class="route-topline"><span>YOUR VOYAGE</span><span class="journey-hint" id="journey-hint">SCROLL OR SWIPE TO DRIFT <span>→</span></span><span class="voyage-count"><b id="chapter-number">01</b> / 05</span></div><nav class="route" aria-label="Voyage chapters"><div class="route-line" aria-hidden="true"><i id="route-progress"></i></div><button data-go="0" aria-current="step"><i></i><span>THE JETTY</span><small>16:00 / BEGIN</small></button><button data-go="1"><i></i><span>ABOARD</span><small>SETTLE IN</small></button><button data-go="2"><i></i><span>MIDNIGHT</span><small>KEEP BUILDING</small></button><button data-go="3"><i></i><span>FIRST LIGHT</span><small>A NEW DAY</small></button><button data-go="4"><i></i><span>YOUR PLACE</span><small>09:00 / ASHORE</small></button></nav><div class="chapter-arrows"><button id="previous-stop" aria-label="Previous chapter" disabled>←</button><button id="next-stop" aria-label="Next chapter">→</button></div></footer>
+<dialog class="field-guide" id="field-guide" aria-labelledby="guide-title"><div class="guide-inner"><header><span>THE HACKATHONI FIELD GUIDE</span><button id="guide-close" aria-label="Close field guide">×</button></header><p class="overline">FOR THE CURIOUS. AND THE PRACTICAL.</p><h2 id="guide-title">Before you<br/><em>step aboard.</em></h2><p class="guide-intro">A solo overnight hackathon on two houseboats in Alappuzha. Your own idea, a boat full of builders, and a night to make something happen.</p><div class="guide-facts"><div><span>BOARDING</span><b>21 Nov 2026 · 16:00</b></div><div><span>DOCKING</span><b>22 Nov 2026 · 09:00</b></div><div><span>ORGANISED BY</span><b>Devin × TinkerHub</b></div><div><span>ENTRY</span><b>Free · Solo</b></div></div><div class="guide-faqs">{faqs.map(([question,answer],i)=><details><summary><span>0{i+1}</span>{question}<b>+</b></summary><p>{answer}</p></details>)}</div><div class="guide-contact"><div><span>YOUR PERSON ON THE SHORE</span><h3>Vaishakh Suresh</h3></div><a href="https://wa.me/917907649864" target="_blank" rel="noopener">Say hello on WhatsApp ↗</a></div><p class="guide-footnote">The voyage is an artistic preview. The detailed programme, boarding point, and onboard facilities will be announced before the event.</p><button class="back-water" id="guide-return">Back to the water <span>→</span></button></div></dialog>
+<script src="../scripts/voyage.js"></script>
+</body></html>
