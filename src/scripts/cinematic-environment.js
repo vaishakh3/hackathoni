@@ -4,11 +4,10 @@ import * as THREE from 'three';
 // Capture lighting once; blend radiance in materials without a probe swap.
 export async function createEnvironment(scene,renderer){
  const loader=new THREE.TextureLoader();
- const [panorama,morning]=await Promise.all([
-  loader.loadAsync('/assets/shore-sunset.webp'),loader.loadAsync('/assets/shore-morning.webp')
- ]);
- for(const map of [panorama,morning]){map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());}
- const uniforms={uMap:{value:panorama},uMorning:{value:morning},uNight:{value:0},uDawn:{value:0}};
+ const panorama=await loader.loadAsync('/assets/shore-sunset.webp');
+ panorama.colorSpace=THREE.SRGBColorSpace;panorama.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+ let morning=panorama;
+ const uniforms={uMap:{value:panorama},uMorning:{value:panorama},uNight:{value:0},uDawn:{value:0}};
  const mat=new THREE.ShaderMaterial({side:THREE.DoubleSide,depthWrite:true,uniforms,
   vertexShader:'varying vec2 vUv;varying float vHeight;void main(){vUv=uv;vHeight=position.y;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
   fragmentShader:`varying vec2 vUv;varying float vHeight;uniform sampler2D uMap,uMorning;uniform float uNight,uDawn;
@@ -41,11 +40,23 @@ export async function createEnvironment(scene,renderer){
  const sunbox=new THREE.Mesh(new THREE.SphereGeometry(15,16,12),new THREE.MeshBasicMaterial({color:new THREE.Color(4,1.5,.4)}));sunbox.position.set(-95,25,-95);captureScene.add(sunbox);
  const pmrem=new THREE.PMREMGenerator(renderer);
  const duskEnvironment=pmrem.fromScene(captureScene,.055,.1,400);
- uniforms.uDawn.value=1;captureScene.background.copy(dayBackground);sunbox.position.set(95,26,-100);sunbox.material.color.setRGB(3.5,2.9,1.9);
- const dayEnvironment=pmrem.fromScene(captureScene,.055,.1,400);
- uniforms.uDawn.value=0;scene.environment=duskEnvironment.texture;
- pmrem.dispose();sunbox.geometry.dispose();sunbox.material.dispose();
- const dayProbe={value:dayEnvironment.texture};
+ scene.environment=duskEnvironment.texture;
+ let dayEnvironment=null,daylightLoading=null;
+ const dayProbe={value:duskEnvironment.texture};
+ function prepareDaylight(){
+  if(daylightLoading)return daylightLoading;
+  daylightLoading=loader.loadAsync('/assets/shore-morning.webp').then(map=>{
+   morning=map;map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=panorama.anisotropy;uniforms.uMorning.value=map;
+   const oldDawn=uniforms.uDawn.value,oldNight=uniforms.uNight.value;
+   uniforms.uDawn.value=1;uniforms.uNight.value=0;captureScene.background.copy(dayBackground);
+   sunbox.position.set(95,26,-100);sunbox.material.color.setRGB(3.5,2.9,1.9);
+   dayEnvironment=pmrem.fromScene(captureScene,.055,.1,400);dayProbe.value=dayEnvironment.texture;
+   uniforms.uDawn.value=oldDawn;uniforms.uNight.value=oldNight;
+  }).catch(error=>console.warn('Morning lighting could not be loaded.',error)).finally(()=>{
+   pmrem.dispose();sunbox.geometry.dispose();sunbox.material.dispose();
+  });
+  return daylightLoading;
+ }
  const applied=new WeakSet();
 
  // Scene geometry makes the rising sun participate in planar reflection.
@@ -61,6 +72,7 @@ export async function createEnvironment(scene,renderer){
  const direction=new THREE.Vector3();
  return {
   sunDirection:direction,
+  prepareDaylight,
   applyToMaterial(material){
    if(!material.isMeshStandardMaterial||applied.has(material))return;applied.add(material);
    const previous=material.onBeforeCompile;
@@ -83,6 +95,6 @@ export async function createEnvironment(scene,renderer){
    sunMaterial.opacity=dawn;haloMaterial.uniforms.uStrength.value=dawn;
    direction.copy(sunrise.position).normalize();
   },
-  dispose(){geo.dispose();mat.dispose();panorama.dispose();morning.dispose();duskEnvironment.dispose();dayEnvironment.dispose();sunDisc.geometry.dispose();sunMaterial.dispose();halo.geometry.dispose();haloMaterial.dispose();}
+  dispose(){geo.dispose();mat.dispose();panorama.dispose();morning.dispose();duskEnvironment.dispose();dayEnvironment?.dispose();sunDisc.geometry.dispose();sunMaterial.dispose();halo.geometry.dispose();haloMaterial.dispose();}
  };
 }

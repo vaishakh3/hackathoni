@@ -6,11 +6,14 @@ METHOD:PUBLISH
 BEGIN:VEVENT
 UID:hackathoni-20261121-alappuzha
 DTSTAMP:20261101T000000Z
-DTSTART:20261121T103000Z
-DTEND:20261122T033000Z
+DTSTART:20261121T100000Z
+DTEND:20261122T040000Z
 SUMMARY:Hackathoni — overnight houseboat hackathon
 LOCATION:Alappuzha\, Kerala — boarding point to be announced
-DESCRIPTION:Solo overnight hackathon on two houseboats. Event details from the supplied brief. Registration and exact boarding point to be announced. This calendar event does not confirm admission.
+DESCRIPTION:Solo overnight hackathon on two houseboats. Twelve hours of hac
+ king. Register at https://luma.com/60zajedj. Selection required. Exact boa
+ rding point to be announced. This calendar event does not confirm admissio
+ n.
 STATUS:TENTATIVE
 END:VEVENT
 END:VCALENDAR

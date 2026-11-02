@@ -1,21 +1,22 @@
-# Water ambience
+# Water sounds
 
 Source: “Water-lap-against-rocks-lake.wav” by **salilnair**.
 
 - Original: https://freesound.org/people/salilnair/sounds/524688/
 - License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
-- Field-recording location listed by the creator: Thiruvananthapuram, Kerala, India.
-- Download: https://cdn.freesound.org/previews/524/524688_11540971-hq.mp3
+- Recording location listed by the creator: Thiruvananthapuram, Kerala, India.
 - Retrieved: 2 November 2026.
 
-This is a Kerala lake recording used as gentle backwater ambience; it is not
-represented as a recording made aboard the event's houseboats in Alappuzha.
+The recording is used as a Kerala lake texture, not represented as the event location.
 
-The local derivative `backwater-lapping.m4a` is a 46-second stereo loop, prepared
-with a two-second seam crossfade, quiet level normalization and gentle peak
-limiting, then encoded as 64 kbit/s AAC. The player fades it in at volume 0.6.
-There is no synthesized noise layer or soundtrack.
+`water-bed.m4a` is a 12-second mono loop with a one-second seam crossfade,
+750 Hz low-pass filtering and restrained peaks. Its player gain is 0.16,
+with another low-pass filter at 900 Hz. It is decoded only after interaction.
+`water-touch.m4a` is a faded 0.85-second lap, played with a short gain envelope
+for navigation, controls and boat rotation. Effects are rate-limited and
+limited to two concurrent voices. The mute control covers both layers.
 
-`tools/prepare-water-audio.py` documents the PCM processing. Source PCM and the
-original MP3 used to build the derivative are retained locally under ignored
-`work/audio/`. The public site requests only the small AAC derivative.
+`tools/prepare-interactive-water.py` reproduces the PCM derivatives from
+`work/audio/lapping-source.wav`. Encode the bed as mono AAC at 48 kbit/s
+and the interaction at 64 kbit/s. Both are served locally (about 88 KB total).
+Web Audio gain provides consistent attenuation on iOS as well as desktop.

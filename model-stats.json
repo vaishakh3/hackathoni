@@ -1,8 +1,10 @@
 {
-  "bytes": 5564360,
+  "bytes": 2235948,
+  "triangles": 292769,
   "meshes": 46,
   "materials": 35,
   "textures": 8,
-  "triangles": 292769,
-  "roofChildren": 9
+  "roofChildren": 9,
+  "compression": "Draco",
+  "masterBytes": 5564360
 }

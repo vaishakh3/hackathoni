@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 import {Water} from 'three/addons/objects/Water.js';
-import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+import {DRACOLoader} from 'three/addons/loaders/DRACOLoader.js';
 import {createEnvironment} from './cinematic-environment.js';
 import {createDistantBoat} from './distant-boat.js';
 import {createAboardMotion, ease} from './aboard-motion.js';
@@ -22,9 +22,12 @@ export async function createLake(){
  const scene=new THREE.Scene();scene.fog=new THREE.FogExp2(0x263949,.0008);
  // Fetch the independent scene assets together instead of serializing three downloads.
  const environmentPromise=createEnvironment(scene,renderer);
- const normalsPromise=new THREE.TextureLoader().loadAsync('/assets/waternormals.jpg');
- const boatPromise=new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync('/assets/houseboat.glb?v=friendly-crew-no-bunting-2');
- const [environment,normals,gltf]=await Promise.all([environmentPromise,normalsPromise,boatPromise]);
+ const normalsPromise=new THREE.TextureLoader().loadAsync('/assets/water-normal-small.jpg');
+ const decoder=new DRACOLoader().setDecoderPath('/assets/draco/').setDecoderConfig({type:'wasm'}).setWorkerLimit(2);
+ decoder.preload();
+ const boatPromise=new GLTFLoader().setDRACOLoader(decoder).loadAsync('/assets/houseboat-light.glb?v=water-3');
+ boatPromise.catch(()=>{}); // Awaited below, after drawing the live shoreline.
+ const [environment,normals]=await Promise.all([environmentPromise,normalsPromise]);
  scene.environmentIntensity=.55;
  const camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,.1,650);
  const hemisphere=new THREE.HemisphereLight(0xb6c9df,0x24170e,.62);scene.add(hemisphere);
@@ -76,6 +79,15 @@ export async function createLake(){
    reflectionSample+=texture2D(mirrorSampler,reflectionUV-vec2(0.,blur)).rgb*.15;
   `);
  scene.add(water);
+ // Draw the actual lake as soon as its small textures are ready. The full boat
+ // joins the same live scene; no still-image placeholder is loaded or swapped.
+ renderer.setSize(innerWidth,innerHeight,false);
+ camera.position.fromArray(mobile()?[16.2,10.8,30]:[4.2,4.1,18.5]);
+ camera.fov=mobile()?51:THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(34)/2)*Math.max(1.18,1.6/camera.aspect)));camera.updateProjectionMatrix();
+ camera.lookAt(mobile()?.7:.65,mobile()?4.3:2.8-THREE.MathUtils.clamp((camera.aspect-1.35)/.25,0,1)*.25,0);
+ renderer.render(scene,camera);document.querySelector('#world').classList.add('landscape-ready');
+ performance.mark('voyage-landscape-ready');
+ const gltf=await boatPromise;decoder.dispose();
  const boatRoot=new THREE.Group();scene.add(boatRoot);
  const boat=gltf.scene;boatRoot.add(boat);const roof=boat.getObjectByName('roof');if(!roof)throw new Error('Missing roof node');const roofBase=roof.position.y;
  boat.traverse(o=>{if(!o.isMesh)return;o.castShadow=false;o.receiveShadow=false;const materials=Array.isArray(o.material)?o.material:[o.material];materials.forEach(m=>{environment.applyToMaterial(m);if(m.map)m.map.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());});});
@@ -124,6 +136,11 @@ export async function createLake(){
   const a=i===1?aboardShot:shots[i],b=i+1===1?aboardShot:shots[i+1];
   targetP.fromArray(a.p).lerp(shotP.fromArray(b.p),f);targetT.fromArray(a.t).lerp(shotT.fromArray(b.t),f);
   let targetFov=mix(a.f,b.f,f);
+  // Short phones need a clear gap between the miniature and the registration line.
+  if(mobile() && innerHeight<=700){
+   const conclusion=smooth(THREE.MathUtils.clamp(visualProgress-3,0,1));
+   targetT.y-=1.8*conclusion;targetFov+=7*conclusion;
+  }
   const inspecting=inspection&&Math.abs(progress-1)<.35 ? motion.camera : 0;
   if(inspecting){
    const close=inspection===1?(mobile()?{p:[10,9,18],t:[0,3.0,0],f:51}:{p:[5.8,6.2,10.8],t:[.25,3.0,-.3],f:44}):(mobile()?{p:[7.2,8.0,12.8],t:[.35,2.8,-.1],f:51}:{p:[3.2,5.4,7.8],t:[.35,2.7,0],f:46});
@@ -166,7 +183,7 @@ export async function createLake(){
   try{
    renderer.render(scene,camera);
   }catch(error){paused=true;rejectFirstFrame(error);window.dispatchEvent(new Event('lake-unavailable'));return;}
-  if(first){performance.mark('voyage-scene-ready');performance.measure('voyage-scene-init','voyage-scene-start','voyage-scene-ready');resolveFirstFrame();}first=false;
+  if(first){if(!performance.getEntriesByName('voyage-scene-ready').length){setTimeout(()=>environment.prepareDaylight().then(()=>{performance.mark('voyage-lighting-ready');request();}),250);}performance.mark('voyage-scene-ready');performance.measure('voyage-scene-init','voyage-scene-start','voyage-scene-ready');resolveFirstFrame();}first=false;
   if(diagnostics){diagnostics.renders.push(performance.now()-renderStart);if(diagnostics.renders.length>240)diagnostics.renders.shift();diagnostics.drawCalls=renderer.info.render.calls;diagnostics.triangles=renderer.info.render.triangles;diagnostics.dpr=quality;diagnostics.boatYaw=boatRoot.rotation.y;diagnostics.heroVelocity=heroVelocity;}
   // Reduce pixel work on sustained missed frames, never on a single loading spike.
   if(!still&&interval<250){sampleCount++;if(interval>23)slowFrames++;}

@@ -1,6 +1,6 @@
 # Hackathoni — A night worth making
 
-An Astro + Three.js journey through an overnight solo hackathon on two houseboats in Alappuzha. Five horizontal chapters move from sunset to midnight and first light. The boat, water and reflections are rendered in real time; the distant shore is a photographic panorama generated for the project.
+An Astro + Three.js journey through an overnight solo hackathon on two houseboats in Alappuzha. Five chapters, vertical on phones and horizontal on desktop, move from sunset to midnight and first light. The boat, water and reflections are rendered in real time; the distant shore is a photographic panorama generated for the project.
 
 ## Run
 
@@ -36,26 +36,26 @@ The final emblem was generated using the built-in Imagegen tool. Its original ra
 
 ## Explore
 
-- On the hero, drag the boat with a mouse to turn it on the water. Releasing a flick gives it briefly decaying momentum. Rotation blends out for the next chapter; touch swipes keep their chapter-navigation behavior.
-- Scroll, swipe, choose a chapter, or press the left/right arrows. Home and End jump to the first and last chapter.
+- On the hero, drag sideways with a mouse or finger to turn the boat. Releasing a flick gives it briefly decaying momentum. On phones, vertical swipes scroll natively and settle at the neighbouring chapter; sideways boat drags stay in the hero. Pinch zoom remains available.
+- Scroll, swipe, choose a chapter, or press the left/right arrows. Up/down also navigate on phones. Home and End jump to the first and last chapter.
 - **Step aboard** lifts the canopy and reveals the workshop. **Peek inside / Lower it** reverses the canopy manually.
 - **Company** and **Workspace** show closer compositions, with more distance than the original cameras. **Whole boat**, Escape, or changing chapters restores the wide composition.
 - Six new sculpted miniature faces replace the photo-textured portraits, eye meshes and transparent hair cards. Their simple features and opaque hair are designed for the scale of the scene.
 - The boat keeps drifting. There is no still-water switch. The operating system's reduced-motion preference still produces a settled composition.
-- Touch open water for a ripple. Gentle water ambience is enabled by default, with a short fade-in. Browsers that block autoplay start it on the first ordinary click, tap or keypress. The sound button remains available in every chapter; muting is remembered across refreshes, and playback pauses in background tabs.
-- The ambience is an edited 46-second loop of [salilnair’s CC0 Kerala lake recording](https://freesound.org/people/salilnair/sounds/524688/), not synthesized noise. The 64 kbit/s AAC asset is about 355 KB and is served locally. [Source and processing credit](public/assets/audio/CREDITS.md).
+- A quiet, filtered water bed starts after the first interaction. Short water laps respond to chapter changes, selected controls and boat rotation, with throttling and a two-voice limit. One mute control covers both layers and persists across refreshes; hidden tabs suspend audio.
+- The locally served bed and interaction samples total about 88 KB, derived from [salilnair’s CC0 Kerala lake recording](https://freesound.org/people/salilnair/sounds/524688/). Web Audio gain controls volume consistently on iOS. [Source and preparation](public/assets/audio/CREDITS.md).
 - Unsupported bow bunting is omitted from the web export, so no ribbons float when the canopy lifts. The editable Blender source remains intact.
-- The native **Field guide** dialog contains event details and FAQs. Escape closes it. Rendering pauses while the guide is open or the tab is hidden.
-- **Your place** offers a tentative calendar download. Applications remain “opening soon”; saving the date does not reserve admission.
+- The native **Field guide** dialog uses a river-chart cover and an ink-on-paper reading layout for the schedule, FAQs and registration. Escape closes it. Rendering pauses while the guide is open or the tab is hidden.
+- **Register** is available in the fixed header, conclusion and field guide, linking to [Luma](https://luma.com/60zajedj). The phone conclusion keeps a compact action above the navigation; full details open in the guide instead of scrolling over the boat. Calendar saving is a separate action and does not reserve admission.
 - `/?view=still` uses the scene poster without WebGL. The poster also remains available if the 3D assets fail or the graphics context is lost.
 
 ## Loading and rendering
 
-Normal page loads and refreshes do not display or download a standby image. The live scene starts loading immediately and fades in after its first successful draw. Navigation, event details and the calendar do not wait for WebGL. Independent model, water and shoreline requests run together. A responsive still image is instantiated only if the scene fails or `?view=still` is requested.
+Normal page loads and refreshes do not display or download a standby image. Critical scene assets preload immediately. The actual live shoreline and water appear while the boat decodes; the boat joins the same canvas. Morning textures and their lighting probe load after the first boat frame. Navigation, event details and the calendar do not wait for WebGL. Independent model, water and shoreline requests run together. A responsive still image is instantiated only if the scene fails or `?view=still` is requested.
 
-The boat asset is **5,564,360 bytes**, down from **12,923,612 bytes** (57% smaller). It has 46 meshes, 35 materials, 8 textures and 292,769 triangles, with the movable roof retained. The export bakes contact shading into vertex colors. The runtime avoids per-frame shadow maps and bloom, compiles shaders asynchronously, caps reflection resolution and pixel density, and reduces pixel work when frames are consistently missed. It uses display-paced animation instead of the former 30 fps cap. Scroll updates are coalesced into animation frames and progress uses a transform.
+The runtime boat asset is **2,235,948 bytes**, down from the previous **5,564,360 bytes** (60% smaller). Draco encoding retains the same geometry, with quantized attributes and smaller textures. The previous Meshopt asset remains the reproducible master. It has 46 meshes, 35 materials, 8 textures and 292,769 triangles, with the movable roof retained. The export bakes contact shading into vertex colors. The runtime avoids per-frame shadow maps and bloom, compiles shaders asynchronously, caps reflection resolution and pixel density, and reduces pixel work when frames are consistently missed. It uses display-paced animation instead of the former 30 fps cap. Scroll updates are coalesced into animation frames and progress uses a transform.
 
-The animated scene still has a real model download and GPU setup cost. The page background and interactive text remain visible during initialization, with no poster-to-scene swap. Performance on a physical phone depends on its GPU, browser and connection.
+The animated scene still has a real model download and GPU setup cost. The live environment renders before model decoding finishes, with no poster-to-scene swap. Performance on a physical phone depends on its GPU, browser and connection.
 
 ## Verification
 
@@ -63,13 +63,14 @@ The animated scene still has a real model download and GPU setup cost. The page 
 npm run build
 npm test
 npm run test:browser
+node tools/verify-mobile-flow.mjs
 ```
 
 The browser script uses an installed Google Chrome by default. Alternatively run `npx playwright install chromium` and `PLAYWRIGHT_CHANNEL=chromium npm run test:browser`. It starts its own local production-file server and writes screenshots and `report.json` to ignored `work/verification/`.
 
 The checks cover all five chapters, roof opening and closing, the company view, removed labels/popups, hero dragging and flick momentum, keyboard navigation, guide/FAQ interactions, paused rendering behind the guide, default ambience, mute/re-enable controls, calendar download, phone and small-phone layouts, reduced motion, held model downloads, throttled loading, refreshes without a standby image or poster download, and a failed-model fallback. They also assert that the emblem loads, branding fits narrow screens, the daylight chapter has no full-screen wash, and the caption, canopy and view selector avoid the route rail at 1512×790, 1512×776, 1024×768, and a short landscape viewport.
 
-The 2 November atlas pass passed 63 browser checks, including the screenshot-proportion collision checks. The Chrome run measured roughly **60 fps** on both desktop and emulated phone layouts, with frame interval p95 around **16.8 ms**. Rendering cost p95 was about **2.6 ms** on desktop and **3.4 ms** on the emulated phone. With 4× CPU throttling, 150 ms network latency and 200 KB/s download throughput, first content painted at about **1.2 seconds**, under the previous poster-based startup; the current startup skips the poster entirely. The model was deliberately held while navigation was tested. These are local browser measurements, not physical-phone or production field data; shader cache and machine load affect initialization timings.
+The latest mobile pass uses Chrome's native touch input to verify vertical swipes, sideways boat rotation, returning from the final notes, action sound throttling, and persisted mute. It also measures a cold page with 4× CPU throttling, 100 ms latency and 1 MB/s download throughput. Under those same conditions the previous build took **8.84 seconds** to show the boat; the updated build took **3.79 seconds**, with the actual shoreline visible at **1.76 seconds**. The first-load transfer fell from about **6.96 MB to 3.30 MB**. A saved baseline in ignored `work/loading-baseline/dist/` enables comparison; without it the script measures the current build only. These are local browser measurements, not physical-phone or production field data.
 
 The filled caption and reading panels from the initial implementation were removed following visual review. Contrast figures from that intermediate treatment do not validate the final transparent phone notes. The current desktop text is checked against rendered sky backgrounds, and phone/landscape notes are also inspected visually with the lake visible beneath their type.
 
@@ -82,16 +83,17 @@ Six motion tests separately cover roof/camera order, smooth reversal, skipping A
 - `src/components/CurrentArrow.astro`, `ViewGlyph.astro` — the current-line navigation and purpose-drawn camera pictograms.
 - `src/scripts/voyage.js` — navigation, accessible state, audio, dialogs and progressive initialization.
 - `src/scripts/lake.js` — rendering, water, lighting, camera paths, roof, hero rotation and adaptive pixel density.
-- `src/scripts/backwater-audio.js` — default ambience, autoplay retry, short fades, background pause and remembered mute.
+- `src/scripts/backwater-audio.js` — quiet Web Audio bed, interaction laps, rate limits, background pause and remembered mute.
 - `tools/build-favicon.mjs` — transparent SVG/PNG packaging of the existing emblem.
-- `tools/prepare-water-audio.py` — repeatable seam crossfade and level preparation for the credited recording.
+- `tools/prepare-interactive-water.py` — filtered loop and short interaction preparation for the credited recording.
+- `tools/build-light-boat.mjs` — Draco runtime asset and local decoder packaging.
 - `src/scripts/cinematic-environment.js` — sunset/morning panoramas, reflected sunrise and blended environment lighting.
 - `src/scripts/aboard-motion.js` — reversible roof/camera choreography.
 - `src/scripts/distant-boat.js` — lightweight secondary boat.
 - `blender/houseboat.blend` — original editable scene with packed material images.
 - `blender/friendly_crew.py` — reproducible miniature crew replacement and contact-shaded export; leaves the original editable scene intact.
 - `blender/compress_model.mjs` — simplification, Meshopt compression and resized WebP textures.
-- `public/assets/houseboat.glb` — final web model with a separate `roof` node.
+- `public/assets/houseboat.glb` — model master with a separate `roof` node; `houseboat-light.glb` is the smaller runtime derivative.
 - `public/assets/voyage-poster*.webp` — captures reserved for a failed scene or explicit still-image view.
 - `tools/verify-voyage.mjs` — browser and performance verification.
 - `model-stats.json` — current exported model counts.
@@ -103,9 +105,10 @@ To replace the crew and export from the existing editable scene:
 ```sh
 /Applications/Blender.app/Contents/MacOS/Blender --background --python blender/friendly_crew.py
 node blender/compress_model.mjs
+node tools/build-light-boat.mjs
 ```
 
-For a complete architectural rebuild, run `node blender/make_screens.mjs` and Blender with `blender/build_boat.py` first, then run the two commands above. The final crew pass replaces the legacy portraits, batches by material, preserves the roof and bakes contact shading. Compression simplifies geometry and uses Meshopt and WebP. Always start compression from a fresh Blender export, since repeated simplification is destructive.
+For a complete architectural rebuild, run `node blender/make_screens.mjs` and Blender with `blender/build_boat.py` first, then run the export and compression commands above. The final crew pass replaces the legacy portraits, batches by material, preserves the roof and bakes contact shading. Compression simplifies geometry and uses Meshopt and WebP. Always start compression from a fresh Blender export, since repeated simplification is destructive.
 
 Use `/?diagnostics` to expose a bounded rolling frame/render sample in `window.__lakeDiagnostics`. Ordinary visits do not collect these samples. Standard Performance entries record `voyage-scene-init`.
 
@@ -120,4 +123,4 @@ Use `/?diagnostics` to expose a bounded rolling frame/render sample in `window._
 - The water normal map comes from the [official Three.js example](https://threejs.org/examples/webgl_shaders_ocean.html). `THREE-LICENSE.txt` and `MESHOPT-LICENSE.txt` retain the corresponding notices.
 - [Three.js Water documentation](https://threejs.org/docs/pages/Water.html) and [Kerala Tourism's kettuvallam reference](https://www.keralatourism.org/kumarakom/houseboats-kerala-kettuvallom.php) informed the scene.
 
-Boarding is 21 November 2026 at 16:00 IST; docking is 22 November at 09:00 IST. `public/hackathoni.ics` records those times in UTC with tentative status. Exact boarding point, applications, facilities, challenge rules, judging and prize terms remain to be confirmed. The model is an artist's impression.
+Boarding is 21 November 2026 at 15:30 IST; docking is 22 November at 09:30 IST. `public/hackathoni.ics` records those times in UTC with tentative status. Registration is through Luma with selection required. Exact boarding point, facility details, challenge rules, judging and prize terms remain to be confirmed. The model is an artist's impression.
