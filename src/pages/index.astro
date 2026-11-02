@@ -109,7 +109,7 @@ const faqs = [
     </section>
     <section class="guide-questions" aria-labelledby="guide-questions-title"><p class="guide-section-label">02 / BEFORE YOU PACK</p><h3 id="guide-questions-title">A few things to know.</h3><div class="guide-faqs">{faqs.map(([question,answer],i)=><details><summary><span>0{i+1}</span>{question}<b aria-hidden="true">+</b></summary><p>{answer}</p></details>)}</div></section>
     <div class="guide-contact"><p class="guide-section-label">03 / A PERSON, NOT A HELPDESK</p><h3>Talk to Vaishakh.</h3><p>A question about the night? Get in touch.</p><a href="https://wa.me/917907649864" target="_blank" rel="noopener">Say hello on WhatsApp <CurrentArrow/></a></div>
-    <div class="guide-calendar"><a class="calendar-cta" href="/hackathoni.ics" download>Save the date to your calendar ↗</a><p>Saving the date does not reserve a place. Register on Luma for selection.</p></div>
+    <a class="guide-apply guide-register-final registration-link" href={registrationUrl} target="_blank" rel="noopener"><span>Register for the night<small>Free entry · Selection through Luma</small></span><CurrentArrow/></a>
     <p class="guide-footnote">The voyage is an artistic preview. The exact boarding point and practical details will be shared before the event.</p>
     <button class="back-water" id="guide-return">Back to the water <CurrentArrow/></button>
    </div>
