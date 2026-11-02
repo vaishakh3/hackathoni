@@ -1,2 +1,2 @@
 import { defineConfig } from 'astro/config';
-export default defineConfig({ output: 'static', devToolbar: { enabled: false }, server: { port: 4321, host: true } });
+export default defineConfig({ site: 'https://hackathoni-seven.vercel.app', output: 'static', devToolbar: { enabled: false }, server: { port: 4321, host: true } });
