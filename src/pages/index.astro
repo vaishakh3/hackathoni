@@ -1,5 +1,6 @@
 ---
 import '../styles/voyage.css';
+import Analytics from '@vercel/analytics/astro';
 import CurrentArrow from '../components/CurrentArrow.astro';
 import ViewGlyph from '../components/ViewGlyph.astro';
 const registrationUrl = 'https://luma.com/60zajedj';
@@ -117,4 +118,5 @@ const faqs = [
  </div>
 </dialog>
 <script src="../scripts/voyage.js"></script>
+<Analytics />
 </body></html>
