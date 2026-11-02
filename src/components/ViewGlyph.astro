@@ -1,0 +1,8 @@
+---
+const { view = 0 } = Astro.props;
+---
+<svg class="view-glyph" viewBox="0 0 50 34" fill="none" aria-hidden="true">
+ {view === 0 && <><path d="M5 23h40l-5 5H11zM11 20V16C11 2 39 2 39 16v4M19 20v-7M31 20v-7"/><path class="glyph-water" d="M6 32c7-5 12 4 19 0s12 3 19-1"/></>}
+ {view === 1 && <><circle cx="17" cy="10" r="5"/><circle cx="34" cy="12" r="4"/><path d="M7 24v-4c0-5 20-5 20 0v4M28 18c5-2 15 0 15 5v1M4 28h42"/><path class="glyph-water" d="M12 32h26"/></>}
+ {view === 2 && <><path d="M11 5h28v19H11zM6 28h38l-5-4H11zM16 12l4 3-4 3M24 18h9"/><path class="glyph-water" d="M12 32h26"/></>}
+</svg>

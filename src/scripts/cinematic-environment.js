@@ -10,14 +10,18 @@ export async function createEnvironment(scene,renderer){
  for(const map of [panorama,morning]){map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());}
  const uniforms={uMap:{value:panorama},uMorning:{value:morning},uNight:{value:0},uDawn:{value:0}};
  const mat=new THREE.ShaderMaterial({side:THREE.DoubleSide,depthWrite:true,uniforms,
-  vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
-  fragmentShader:`varying vec2 vUv;uniform sampler2D uMap,uMorning;uniform float uNight,uDawn;
+  vertexShader:'varying vec2 vUv;varying float vHeight;void main(){vUv=uv;vHeight=position.y;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+  fragmentShader:`varying vec2 vUv;varying float vHeight;uniform sampler2D uMap,uMorning;uniform float uNight,uDawn;
   void main(){
    vec3 c=texture2D(uMap,vUv).rgb;
    float l=dot(c,vec3(.2126,.7152,.0722));
    vec3 night=mix(vec3(l)*vec3(.18,.28,.43),c*.18,.35);
    c=mix(c,night,uNight);
    c=mix(c,texture2D(uMorning,vUv).rgb,uDawn);
+   // Let the upper panorama dissolve into sky instead of stretching its edge
+   // pixels into vertical bands when a composition leaves more breathing room.
+   vec3 upperSky=mix(vec3(.018,.035,.065),vec3(.27,.55,.76),uDawn);
+   c=mix(c,upperSky,smoothstep(50.,85.,vHeight));
    gl_FragColor=vec4(c,1.);
    #include <tonemapping_fragment>
    #include <colorspace_fragment>

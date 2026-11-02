@@ -3,6 +3,11 @@ from pathlib import Path
 import bpy, numpy as np
 HERE=Path(__file__).resolve().parent
 bpy.ops.wm.open_mainfile(filepath=str(HERE/'houseboat.blend'))
+# The bow bunting has no independent supports when the canopy is raised.
+# Leave the editable source intact, but omit both cord and pennants from exports.
+bunting=[o for o in bpy.data.objects if o.name.startswith('Flags /')]
+for o in bunting:bpy.data.objects.remove(o,do_unlink=True)
+print('REMOVED_UNSUPPORTED_BUNTING',len(bunting),flush=True)
 root=bpy.data.objects['houseboat'];roof=bpy.data.objects['roof']
 bpy.context.view_layer.update();groups={}
 for o in list(bpy.data.objects):

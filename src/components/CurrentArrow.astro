@@ -1,0 +1,8 @@
+---
+const { reverse = false, class: className = '' } = Astro.props;
+---
+<svg class:list={['current-arrow', className, { 'current-arrow--reverse': reverse }]} viewBox="0 0 70 28" fill="none" aria-hidden="true">
+ <path class="current-arrow-flow" d="M3 18C14 18 16 10 27 10S40 18 51 18H65"/>
+ <path class="current-arrow-tip" d="m58 11 8 7-8 7"/>
+ <path class="current-arrow-echo" d="M5 24c10 0 13-7 23-7"/>
+</svg>
