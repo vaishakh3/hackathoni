@@ -81,7 +81,8 @@ export async function createLake(){
  scene.add(water);
  // Draw the actual lake as soon as its small textures are ready. The full boat
  // joins the same live scene; no still-image placeholder is loaded or swapped.
- renderer.setSize(innerWidth,innerHeight,false);
+ let viewportWidth=innerWidth,viewportHeight=innerHeight,drawnQuality=quality;
+ renderer.setSize(viewportWidth,viewportHeight,false);camera.aspect=viewportWidth/viewportHeight;
  camera.position.fromArray(mobile()?[16.2,10.8,30]:[4.2,4.1,18.5]);
  camera.fov=mobile()?51:THREE.MathUtils.radToDeg(2*Math.atan(Math.tan(THREE.MathUtils.degToRad(34)/2)*Math.max(1.18,1.6/camera.aspect)));camera.updateProjectionMatrix();
  camera.lookAt(mobile()?.7:.65,mobile()?4.3:2.8-THREE.MathUtils.clamp((camera.aspect-1.35)/.25,0,1)*.25,0);
@@ -118,6 +119,20 @@ export async function createLake(){
  function render(now=performance.now()){
   raf=0;if(disposed||paused)return;const interval=now-last;const elapsed=Math.min(.05,interval/1000||.016);last=now;if(!still)time+=elapsed;
   if(diagnostics){diagnostics.totalFrames++;diagnostics.frames.push(interval);if(diagnostics.frames.length>240)diagnostics.frames.shift();}
+  // Resizing a WebGL drawing buffer clears it immediately. Do all buffer
+  // changes before this frame's draw, never after it or in a resize event.
+  // Keep the last complete frame intact while paused (e.g. behind the guide).
+  if(!still&&interval<250){sampleCount++;if(interval>23)slowFrames++;}
+  if(sampleCount>=90){
+   if(slowFrames>20&&quality>.85&&now-lastQualityChange>3000){quality=Math.max(.85,quality-.15);lastQualityChange=now;}
+   sampleCount=0;slowFrames=0;
+  }
+  if(viewportWidth!==innerWidth||viewportHeight!==innerHeight){
+   viewportWidth=innerWidth;viewportHeight=innerHeight;
+   renderer.setSize(viewportWidth,viewportHeight,false);
+   camera.aspect=viewportWidth/viewportHeight;second.visible=!mobile();
+  }
+  if(drawnQuality!==quality){renderer.setPixelRatio(quality);drawnQuality=quality;}
   const instant=still||first;
   visualProgress=instant?progress:mix(visualProgress,progress,1-Math.exp(-elapsed*2.8));
   if(Math.abs(visualProgress-progress)<.0001)visualProgress=progress;
@@ -185,19 +200,14 @@ export async function createLake(){
   }catch(error){paused=true;rejectFirstFrame(error);window.dispatchEvent(new Event('lake-unavailable'));return;}
   if(first){if(!performance.getEntriesByName('voyage-scene-ready').length){setTimeout(()=>environment.prepareDaylight().then(()=>{performance.mark('voyage-lighting-ready');request();}),250);}performance.mark('voyage-scene-ready');performance.measure('voyage-scene-init','voyage-scene-start','voyage-scene-ready');resolveFirstFrame();}first=false;
   if(diagnostics){diagnostics.renders.push(performance.now()-renderStart);if(diagnostics.renders.length>240)diagnostics.renders.shift();diagnostics.drawCalls=renderer.info.render.calls;diagnostics.triangles=renderer.info.render.triangles;diagnostics.dpr=quality;diagnostics.boatYaw=boatRoot.rotation.y;diagnostics.heroVelocity=heroVelocity;}
-  // Reduce pixel work on sustained missed frames, never on a single loading spike.
-  if(!still&&interval<250){sampleCount++;if(interval>23)slowFrames++;}
-  if(sampleCount>=90){if(slowFrames>20&&quality>.85&&now-lastQualityChange>3000){quality=Math.max(.85,quality-.15);renderer.setPixelRatio(quality);lastQualityChange=now;}sampleCount=0;slowFrames=0;}
-
   const moving=currentCamera.distanceTo(targetP)>.005||currentTarget.distanceTo(targetT)>.005||Math.abs(motion.position-motion.target)>.001||Math.abs(visualProgress-progress)>.001||Math.abs(dawn-dawnTarget)>.001||(!boatDragging&&!still&&Math.abs(heroVelocity)>.002);
   if(!still||moving)raf=requestAnimationFrame(render);
  }
  function request(){if(!raf&&!paused&&!disposed)raf=requestAnimationFrame(render);}
- function resize(){second.visible=!mobile();renderer.setSize(innerWidth,innerHeight,false);renderer.setPixelRatio(quality);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();first=true;request();}
  // Parallel shader compilation keeps driver setup from freezing navigation.
  camera.position.fromArray((mobile()?phoneShots:desktopShots)[0].p);camera.lookAt(0,2.8,0);
  await renderer.compileAsync(scene,camera);
- window.addEventListener('resize',resize);resize();
+ window.addEventListener('resize',request);request();
  const ray=new THREE.Raycaster(),ndc=new THREE.Vector2(),hit=new THREE.Vector3(),plane=new THREE.Plane(new THREE.Vector3(0,1,0),.56);
  canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();disposed=true;rejectFirstFrame(new Error('The lake context was lost.'));cancelAnimationFrame(raf);document.querySelector('#world').classList.remove('ready');document.querySelector('#loading-note').textContent='THE QUIET VOYAGE · STILL IMAGE VIEW';document.querySelector('#loading-note').classList.remove('loaded');document.querySelector('#loading-note').removeAttribute('aria-hidden');window.dispatchEvent(new Event('lake-unavailable'));});
  function beginBoatDrag(x,y){
