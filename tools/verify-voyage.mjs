@@ -7,7 +7,7 @@ import {chromium} from 'playwright';
 const output=resolve('work/verification');await mkdir(output,{recursive:true});
 const root=resolve('dist');
 const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.glb':'model/gltf-binary','.woff2':'font/woff2','.ics':'text/calendar','.m4a':'audio/mp4','.wasm':'application/wasm'};
-const server=createServer(async(req,res)=>{const pathname=new URL(req.url,'http://localhost').pathname;const path=resolve(root,'.'+(pathname==='/'?'/index.html':pathname));if(!path.startsWith(root+sep)){res.writeHead(403).end();return;}try{const bytes=await readFile(path);res.writeHead(200,{'Content-Type':mime[extname(path)]??'application/octet-stream','Cache-Control':'no-store'});res.end(bytes);}catch{res.writeHead(404).end();}});
+const server=createServer(async(req,res)=>{const pathname=new URL(req.url,'http://localhost').pathname;if(pathname==='/_vercel/insights/script.js'){res.writeHead(200,{'Content-Type':'text/javascript'}).end('/* Analytics is provided by Vercel in production. */');return;}const path=resolve(root,'.'+(pathname==='/'?'/index.html':pathname));if(!path.startsWith(root+sep)){res.writeHead(403).end();return;}try{const bytes=await readFile(path);res.writeHead(200,{'Content-Type':mime[extname(path)]??'application/octet-stream','Cache-Control':'no-store'});res.end(bytes);}catch{res.writeHead(404).end();}});
 await new Promise(r=>server.listen(0,'127.0.0.1',r));const base=`http://127.0.0.1:${server.address().port}`;
 const browser=await chromium.launch({headless:true,args:['--mute-audio'],...(process.env.PLAYWRIGHT_CHANNEL==='chromium'?{}:{channel:process.env.PLAYWRIGHT_CHANNEL??'chrome'})});
 const report={date:new Date().toISOString(),checks:[],desktop:{},mobile:{},slowLoad:{}};
@@ -39,7 +39,7 @@ try{
  report.desktop.longTasks=await page.evaluate(()=>window.__longTasks);
  const initial=await page.evaluate(()=>window.__lakeDiagnostics);report.desktop.frames=stats(initial.frames);report.desktop.render=stats(initial.renders);report.desktop.triangles=initial.triangles;report.desktop.drawCalls=initial.drawCalls;
  check('Redundant navigation captions are removed',await page.locator('.chapter-arrows').innerText().then(t=>t.trim()==='')&&await page.locator('#journey-hint').count()===0);
- check('Supplied partner logos load transparently',await page.locator('.sponsor-logos img').evaluateAll(es=>es.length===2&&es.every(e=>e.complete&&e.naturalWidth>0)));
+ check('Supplied partner logos load transparently',await page.locator('.sponsor-logos img').evaluateAll(es=>es.length===4&&es.every(e=>e.complete&&e.naturalWidth>0)));
  check('Left-side partner text is removed',await page.locator('.jetty-facts').innerText().then(t=>!t.includes('DEVIN')&&!t.includes('TINKERHUB')));
  check('Navigation uses the current-line glyphs',await page.locator('.chapter-arrows .current-arrow').count()===2);
  const yaw=await page.evaluate(()=>window.__lakeDiagnostics.boatYaw);

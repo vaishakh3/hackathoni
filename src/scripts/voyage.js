@@ -49,7 +49,16 @@ let wheelSum=0,lastWheel=0;
 track.addEventListener('wheel',event=>{if(verticalQuery.matches)return;if(Math.abs(event.deltaX)>Math.abs(event.deltaY))return;if(event.target.closest('.ticket')||(innerWidth<=760&&event.target.closest('.boarding')))return;event.preventDefault();const now=performance.now();if(now-lastWheel<700)return;wheelSum+=event.deltaY;if(Math.abs(wheelSum)>35){go(index+(wheelSum>0?1:-1));wheelSum=0;lastWheel=now;}},{passive:false});
 window.addEventListener('keydown',event=>{if(guide.open||event.altKey||event.ctrlKey||event.metaKey||event.target.closest('input,textarea,summary,select'))return;if(event.key==='ArrowRight'||(verticalQuery.matches&&event.key==='ArrowDown')){event.preventDefault();go(index+1);}if(event.key==='ArrowLeft'||(verticalQuery.matches&&event.key==='ArrowUp')){event.preventDefault();go(index-1);}if(event.key==='Home'){event.preventDefault();go(0);}if(event.key==='End'){event.preventDefault();go(4);}});
 window.addEventListener('resize',()=>{scrollToChapter(index,'instant');update();});
-document.querySelectorAll('.guide-open').forEach(button=>button.addEventListener('click',()=>{guide.showModal();world?.setPaused(true);}));
+document.querySelectorAll('.guide-open, [data-guide-target]').forEach(button=>button.addEventListener('click',()=>{
+ if(!guide.open){guide.showModal();world?.setPaused(true);}
+ const target=button.dataset.guideTarget&&document.getElementById(button.dataset.guideTarget);
+ const scroller=guide.querySelector('.guide-layout');
+ if(target){
+  // Scroll only the guide, leaving the voyage's chapter and camera untouched.
+  scroller.scrollTo({top:scroller.scrollTop+target.getBoundingClientRect().top-scroller.getBoundingClientRect().top-24,behavior:'instant'});
+  target.querySelector('h3').focus({preventScroll:true});
+ }else scroller.scrollTo({top:0,behavior:'instant'});
+}));
 function closeGuide(){guide.close();world?.setPaused(false);}
 document.querySelector('#guide-close').addEventListener('click',closeGuide);document.querySelector('#guide-return').addEventListener('click',closeGuide);guide.addEventListener('close',()=>world?.setPaused(false));
 guide.addEventListener('click',e=>{if(e.target!==guide)return;const r=guide.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeGuide();});

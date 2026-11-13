@@ -239,6 +239,16 @@ body:is([data-stop="3"], [data-stop="4"]) .coordinates { visibility: hidden; }
 .sponsor-devin { width: 85px; }
 .sponsor-tinkerhub { width: 110px; }
 .sponsor-logos > span { font-size: 13px; opacity: .6; }
+.sponsor-logos { flex-direction: column; align-items: flex-start; gap: 9px; bottom: 23px; }
+.organizer-logos { display: flex; align-items: center; gap: 17px; }
+.organizer-logos > span { font-size: 13px; opacity: .6; }
+.partner-credits { display: flex; gap: 24px; align-items: center; width: 100%; padding: 7px 0 0; border-top: 1px solid #f5efdd40; text-align: left; }
+.partner-credit { display: grid; gap: 5px; }
+.partner-credit small { font-size: 8px; letter-spacing: .03em; }
+.partner-credit img { width: 67px; height: 14px; object-position: left center; }
+.partner-credit:nth-child(2) img { width: 88px; }
+.partner-mobile-label { display: none; }
+.partner-credits:hover { color: var(--brass); }
 .chapter-arrows { position: fixed; right: var(--gutter); bottom: 26px; display: flex; gap: 12px; align-items: center; }
 .chapter-arrows button { display: flex; align-items: center; justify-content: center; min-width: 72px; min-height: 49px; padding: 0; }
 .chapter-arrows .current-arrow { width: 65px; }
@@ -599,4 +609,69 @@ body:is([data-stop="3"], [data-stop="4"]) .coordinates { visibility: hidden; }
  .guide-facts b { font-size: 38px; }.guide-facts b em { font-size: 20px; }
  .guide-apply { font-size: 26px; }
  .admission-note { font-size: 11px; }
+}
+
+/* Small invitations on the water; the full catalogue lives in the guide. */
+.prize-discovery { display: flex; align-items: center; gap: 12px; min-height: 36px; margin-top: 7px; padding: 0; color: var(--paper); font-size: 12px; text-shadow: 0 1px 3px #031b2d; }
+.prize-discovery .current-arrow { width: 38px; height: 24px; }
+.prize-discovery:hover { color: var(--brass); }
+.guide-index { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 22px; }
+.guide-index button { display: flex; align-items: center; gap: 16px; min-height: 44px; padding: 0; color: var(--brass); font-size: 12px; }
+.guide-index .current-arrow { width: 34px; height: 22px; }
+.guide-prizes, .guide-partners { margin-top: 52px; }
+.guide-prizes h3 em { color: var(--clay); }
+.prize-intro { margin-top: 14px; font-size: 14px; line-height: 1.6; }
+.prize-list { list-style: none; margin: 24px 0 0; padding: 0; }
+.prize-entry { display: grid; grid-template-columns: 44% 1fr; gap: 22px; align-items: center; padding: 22px 0; border-top: 1px solid #082f4333; }
+.prize-art { position: relative; min-width: 0; }
+.prize-art > span { position: absolute; top: 3px; left: 0; font: italic 700 35px/1 var(--lettering); color: var(--clay); }
+.prize-art img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; }
+.prize-copy .prize-place { margin: 0 0 9px; text-transform: uppercase; font-size: 9px; font-weight: 600; letter-spacing: .12em; color: var(--clay); }
+.prize-copy h4 { margin: 0; font: italic 700 clamp(26px, 2.5vw, 36px)/1.05 var(--lettering); letter-spacing: -.02em; text-wrap: balance; }
+.prize-copy > p:last-child { font-size: 12px; line-height: 1.6; margin-top: 12px; max-width: 23ch; }
+.prize-footnote { border-top: 1px solid #082f4333; padding-top: 12px; font-size: 10px; line-height: 1.5; }
+.guide-organizers { margin-top: 28px; padding: 24px 0; border-block: 1px solid #082f4333; }
+.guide-organizers > p, .guide-partner-row p { margin-bottom: 18px; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; color: var(--clay); }
+.guide-organizers > div { display: flex; align-items: center; gap: 24px; }
+.guide-organizers img { width: 36%; max-width: 170px; height: auto; filter: brightness(0); }
+.guide-organizers span { font-size: 19px; color: var(--clay); }
+.guide-partner-row { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 24px 0; border-bottom: 1px solid #082f4333; }
+.guide-partner-row img { display: block; width: 100%; max-width: 138px; height: 27px; object-fit: contain; object-position: left center; }
+@media (max-width: 1100px) and (min-width: 761px) {
+ .organizer-logos { gap: 10px; }
+ .partner-credits { gap: 14px; }
+ .partner-credit img { width: 54px; height: 12px; }
+ .partner-credit:nth-child(2) img { width: 70px; }
+}
+@media (max-width: 760px) {
+ :root { --footer-height: 106px; }
+ .route-topline { height: 44px; }
+ .sponsor-logos { gap: 0; }
+ .organizer-logos { gap: 8px; }
+ .organizer-logos > span { font-size: 10px; }
+ .partner-credits { border: 0; padding: 0; min-height: 26px; }
+ .partner-credit { display: none; }
+ .partner-mobile-label { display: flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 0; }
+ .partner-mobile-label .current-arrow { width: 25px; height: 20px; }
+ .chapter-arrows { top: 6px; }
+ .guide-prizes, .guide-partners { margin-top: 40px; }
+ .prize-entry { grid-template-columns: 42% 1fr; gap: 18px; padding: 20px 0; }
+ .prize-art > span { top: -7px; font-size: 27px; }
+ .prize-copy h4 { font-size: 29px; }
+ .prize-copy > p:last-child { font-size: 12px; margin-top: 8px; }
+ .guide-organizers > div { gap: 17px; }
+ .guide-organizers img { width: 40%; }
+ .guide-partner-row { gap: 22px; }
+ .guide-partner-row img { height: 23px; }
+ .prize-discovery { font-size: 11px; gap: 8px; margin-top: 3px; min-height: 32px; }
+ .prize-discovery .current-arrow { width: 30px; }
+ .morning-note { display: flex; align-items: center; gap: 12px; }
+ .morning-note p { display: none; }
+ .morning-note .prize-discovery { margin-top: 0; }
+}
+@media (max-width: 360px) {
+ .prize-entry { gap: 12px; }
+ .prize-copy h4 { font-size: 25px; }
+ .prize-copy .prize-place { font-size: 8px; }
+ .prize-copy > p:last-child { font-size: 11px; }
 }

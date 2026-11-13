@@ -9,13 +9,18 @@ const pageDescription = 'A 12-hour solo hackathon on two houseboats in Kerala’
 const canonicalUrl = new URL('/', Astro.site);
 const shareImageUrl = new URL('/assets/brand/hackathoni-social-v1.jpg', Astro.site);
 const shareImageAlt = 'Hackathoni: 12 hours, two houseboats, a night worth making. A lantern-lit houseboat on Kerala’s backwaters at sunset. 21–22 November 2026, Alappuzha.';
+const prizes = [
+ {place:'First prize', name:'Nintendo Switch OLED', note:'For a little play after the build.', image:'nintendo-switch-oled'},
+ {place:'Second prize', name:'Bambu Lab A1 Mini', note:'Bring your next idea into the world.', image:'bambu-a1-mini'},
+ {place:'Third prize', name:'MX Master 3S Mouse', note:'For everything you make next.', image:'mx-master-3s'},
+];
 const faqs = [
  ['Is this a team hackathon?', 'Hackathoni is a solo hackathon. You build your own project while sharing the experience with other builders.'],
  ['When and where?', 'Alappuzha, Kerala. Boarding: Saturday, 21 November 2026 at 15:30. Docking: Sunday, 22 November at 09:30. The exact boarding point will be announced.'],
  ['Is entry free?', 'Entry is free. Register through Luma; applications are reviewed to select 50 builders. Your place is confirmed when your registration is approved.'],
  ['What can I build?', 'Bring your own idea and build a project with Devin. You’ll have twelve hours of hacking, followed by demos and judging. The detailed challenge and judging guidelines will be shared before the event.'],
  ['What about Wi-Fi, power, meals, and rest?', 'Food and refreshments are part of the night. Details about connectivity, charging, rest arrangements and accessibility will be shared before the event. Contact us if you have a specific requirement.'],
- ['What are the prizes?', 'Devin Max plans for winners, with more prizes to be announced. Award categories and terms are still to come.'],
+ ['What are the prizes?', 'First prize: Nintendo Switch OLED. Second prize: Bambu Lab A1 Mini. Third prize: MX Master 3S Mouse.'],
 ];
 ---
 <!doctype html>
@@ -87,7 +92,7 @@ const faqs = [
  <section class="stop morning" id="morning" aria-labelledby="morning-title">
   <div class="chapter-copy"><p class="overline">03 / FIRST LIGHT</p><h2 id="morning-title">Take something <em>new ashore.</em></h2><p class="chapter-description">By morning, the idea is yours to show.</p></div>
   <button class="voyage-cta stage-cta" data-go="4"><span>Find your place aboard</span><CurrentArrow/></button>
-  <div class="morning-note"><span lang="ml">പുലരി</span><p>PULARI / FIRST LIGHT</p></div>
+  <div class="morning-note"><span lang="ml">പുലരി</span><p>PULARI / FIRST LIGHT</p><button class="guide-open prize-discovery" data-guide-target="guide-prizes">Explore the three prizes <CurrentArrow/></button></div>
  </section>
  <section class="stop boarding" id="boarding" aria-labelledby="boarding-title">
   <div class="boarding-heading"><p class="overline"><span class="folio-number">04</span> / Your place</p><h2 id="boarding-title"><span class="title-line title-line--first">Leave the</span><em class="title-line title-line--middle">ordinary</em><span class="title-line title-line--last">ashore.</span></h2></div>
@@ -104,7 +109,7 @@ const faqs = [
  </section>
 </main>
 <div class="voyage-tools"><button id="sound-toggle" aria-pressed="true" aria-label="Mute water ambience"><svg viewBox="0 0 20 16" aria-hidden="true"><path d="M2 5h4l5-4v14l-5-4H2Z" fill="none" stroke="currentColor"/><path d="M14 4q6 4 0 8" fill="none" stroke="currentColor"/></svg><span id="sound-text">SOUND ON</span></button><span id="loading-note" aria-live="polite">SETTING SAIL</span></div>
-<footer class="voyage-footer"><div class="route-topline"><span>THE VOYAGE</span><div class="sponsor-logos" aria-label="Devin and TinkerHub"><img class="sponsor-devin" src="/assets/brand/devin-white.webp" width="600" height="160" alt="Devin"/><span aria-hidden="true">×</span><img class="sponsor-tinkerhub" src="/assets/brand/tinkerhub-white.webp" width="600" height="98" alt="TinkerHub"/></div><span class="voyage-count"><b id="chapter-number">01</b> / 05</span></div><nav class="route" aria-label="Voyage chapters"><div class="route-line" role="progressbar" aria-label="Voyage progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="route-progress"></i></div><button data-go="0" aria-current="step"><i></i><span>Jetty</span><small>15:30</small></button><button data-go="1"><i></i><span>Aboard</span><small>Settle in</small></button><button data-go="2"><i></i><span>Midnight</span><small>Build</small></button><button data-go="3"><i></i><span>First light</span><small>Dawn</small></button><button data-go="4"><i></i><span>Your place</span><small>09:30</small></button></nav><div class="chapter-arrows"><button id="previous-stop" aria-label="Previous chapter" disabled><CurrentArrow reverse/></button><span class="nav-divider" aria-hidden="true"></span><button id="next-stop" aria-label="Next chapter"><CurrentArrow/></button></div></footer>
+<footer class="voyage-footer"><div class="route-topline"><span>THE VOYAGE</span><div class="sponsor-logos" aria-label="Organisers and partners"><div class="organizer-logos"><img class="sponsor-devin" src="/assets/brand/devin-white.webp" width="600" height="160" alt="Devin"/><span aria-hidden="true">×</span><img class="sponsor-tinkerhub" src="/assets/brand/tinkerhub-white.webp" width="600" height="98" alt="TinkerHub"/></div><button class="guide-open partner-credits" data-guide-target="guide-partners" aria-label="Meet our partners: Sarvam, AI partner, and smallest.ai"><span class="partner-credit"><small>AI partner</small><img src="/assets/brand/sarvam-light.webp" alt="Sarvam" width="320" height="51"/></span><span class="partner-credit"><small>Partner</small><img src="/assets/brand/smallest-white.svg" alt="smallest.ai" width="281" height="46"/></span><span class="partner-mobile-label">Our partners <CurrentArrow/></span></button></div><span class="voyage-count"><b id="chapter-number">01</b> / 05</span></div><nav class="route" aria-label="Voyage chapters"><div class="route-line" role="progressbar" aria-label="Voyage progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="route-progress"></i></div><button data-go="0" aria-current="step"><i></i><span>Jetty</span><small>15:30</small></button><button data-go="1"><i></i><span>Aboard</span><small>Settle in</small></button><button data-go="2"><i></i><span>Midnight</span><small>Build</small></button><button data-go="3"><i></i><span>First light</span><small>Dawn</small></button><button data-go="4"><i></i><span>Your place</span><small>09:30</small></button></nav><div class="chapter-arrows"><button id="previous-stop" aria-label="Previous chapter" disabled><CurrentArrow reverse/></button><span class="nav-divider" aria-hidden="true"></span><button id="next-stop" aria-label="Next chapter"><CurrentArrow/></button></div></footer>
 <dialog class="field-guide" id="field-guide" aria-labelledby="guide-title">
  <div class="guide-inner">
   <header class="guide-header"><span>HACKATHONI <i>/</i> FIELD GUIDE</span><div><a class="guide-register registration-link" href={registrationUrl} target="_blank" rel="noopener">Register <CurrentArrow/></a><button id="guide-close" aria-label="Close field guide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div></header>
@@ -118,6 +123,7 @@ const faqs = [
      <span class="chart-label chart-label--start"><b>01</b> Set off</span><span class="chart-label chart-label--middle"><b>02</b> Make something</span><span class="chart-label chart-label--end"><b>03</b> Bring it ashore</span>
     </div>
     <div class="guide-edition"><span lang="ml">തോണി</span><p>thōni / a boat.<br/>A way a little further from ordinary.</p></div>
+    <nav class="guide-index" aria-label="Inside the field guide"><button data-guide-target="guide-prizes">The prizes <CurrentArrow/></button><button data-guide-target="guide-partners">Our partners <CurrentArrow/></button></nav>
    </div>
    <div class="guide-reading">
     <section class="guide-essential" aria-labelledby="guide-essentials-title">
@@ -128,8 +134,24 @@ const faqs = [
      <div class="guide-meta"><span>Solo · Free entry</span><span>Devin × TinkerHub</span></div>
      <a class="guide-apply registration-link" href={registrationUrl} target="_blank" rel="noopener"><span>Find your place aboard<small>Register on Luma · Selection required</small></span><CurrentArrow/></a>
     </section>
-    <section class="guide-questions" aria-labelledby="guide-questions-title"><p class="guide-section-label">02 / BEFORE YOU PACK</p><h3 id="guide-questions-title">A few things to know.</h3><div class="guide-faqs">{faqs.map(([question,answer],i)=><details><summary><span>0{i+1}</span>{question}<b aria-hidden="true">+</b></summary><p>{answer}</p></details>)}</div></section>
-    <div class="guide-contact"><p class="guide-section-label">03 / A PERSON, NOT A HELPDESK</p><h3>Talk to Vaishakh.</h3><p>A question about the night? Get in touch.</p><a href="https://wa.me/917907649864" target="_blank" rel="noopener">Say hello on WhatsApp <CurrentArrow/></a></div>
+    <section class="guide-prizes" id="guide-prizes" aria-labelledby="guide-prizes-title">
+     <p class="guide-section-label">02 / SOMETHING TO TAKE ASHORE</p>
+     <h3 id="guide-prizes-title" tabindex="-1">A good night.<br/><em>A little extra.</em></h3>
+     <p class="prize-intro">Three prizes for the top three builds.</p>
+     <ol class="prize-list">{prizes.map((prize,i)=><li class="prize-entry">
+      <div class="prize-art"><span aria-hidden="true">0{i+1}</span><img src={`/assets/prizes/${prize.image}.webp`} alt={`Illustration of ${prize.name}`} width="640" height="640" loading="lazy" decoding="async"/></div>
+      <div class="prize-copy"><p class="prize-place">{prize.place}</p><h4>{prize.name}</h4><p>{prize.note}</p></div>
+     </li>)}</ol>
+     <p class="prize-footnote">Product illustrations are artistic impressions.</p>
+    </section>
+    <section class="guide-partners" id="guide-partners" aria-labelledby="guide-partners-title">
+     <p class="guide-section-label">03 / IN GOOD COMPANY</p>
+     <h3 id="guide-partners-title" tabindex="-1">Making the night possible.</h3>
+     <div class="guide-organizers"><p>Organised by</p><div><img src="/assets/brand/devin-white.webp" alt="Devin" width="600" height="160" loading="lazy"/><span aria-hidden="true">×</span><img src="/assets/brand/tinkerhub-white.webp" alt="TinkerHub" width="600" height="98" loading="lazy"/></div></div>
+     <div class="guide-partner-row"><div><p>AI partner</p><img src="/assets/brand/sarvam-dark.webp" alt="Sarvam" width="320" height="51" loading="lazy"/></div><div><p>Partner</p><img src="/assets/brand/smallest-ink.svg" alt="smallest.ai" width="281" height="46" loading="lazy"/></div></div>
+    </section>
+    <section class="guide-questions" aria-labelledby="guide-questions-title"><p class="guide-section-label">04 / BEFORE YOU PACK</p><h3 id="guide-questions-title">A few things to know.</h3><div class="guide-faqs">{faqs.map(([question,answer],i)=><details><summary><span>0{i+1}</span>{question}<b aria-hidden="true">+</b></summary><p>{answer}</p></details>)}</div></section>
+    <div class="guide-contact"><p class="guide-section-label">05 / A PERSON, NOT A HELPDESK</p><h3>Talk to Vaishakh.</h3><p>A question about the night? Get in touch.</p><a href="https://wa.me/917907649864" target="_blank" rel="noopener">Say hello on WhatsApp <CurrentArrow/></a></div>
     <a class="guide-apply guide-register-final registration-link" href={registrationUrl} target="_blank" rel="noopener"><span>Register for the night<small>Free entry · Selection through Luma</small></span><CurrentArrow/></a>
     <p class="guide-footnote">The voyage is an artistic preview. The exact boarding point and practical details will be shared before the event.</p>
     <button class="back-water" id="guide-return">Back to the water <CurrentArrow/></button>
